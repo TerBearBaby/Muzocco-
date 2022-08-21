@@ -1,7 +1,6 @@
 import discord, json, os, random, asyncio, string, time, hostingserver, requests
 from discord.ext import commands, tasks
 from datetime import datetime
-
 from requests import get
 
 # imports things needed for bot (modules needed)
