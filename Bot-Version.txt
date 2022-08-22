@@ -1,0 +1,5 @@
+Date bot was created: Aug 8th, 2022
+Version: Beta 0.0.1
+Partners: None
+Music commands: 0
+Total Commands: 6
