@@ -242,5 +242,5 @@ async def links(ctx):
   await ctx.respond(embed=supportem)
 
 keep_alive()
-starttime = time.time()
+starttime = time.time() 
 client.run(os.getenv("TOKEN"))
