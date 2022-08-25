@@ -58,6 +58,7 @@ async def help(ctx):
   embed.add_field(name="M?si/serverinfo", value="Shows info for a server Muzocco! is in", inline=True)
   embed.add_field(name="M?meme", value="Run this command to see an epic meme", inline=True)
   embed.add_field(name="M?av/avatar", value="Shows avatar (pfp) for pinged user", inline=True)
+  embed.add_field(name="M?links", value="Links for invitation to support and to invite Muzocco!")
   embed.set_footer(text=f"Copyright © Muzocco! 2022 All Rights Reserved")
   embed.timestamp = discord.utils.utcnow()
   await ctx.reply(embed=embed)
@@ -133,9 +134,17 @@ async def serverinfo(ctx, member: discord.Member = None):
   embed.add_field(name='👑Owner', value=f"{ctx.guild.owner.mention}", inline=True)
   embed.add_field(name='👥Members', value=f'{ctx.guild.member_count} Members', inline=True)
   embed.add_field(name='💬Channels', value=f'{len(ctx.guild.text_channels)} Text | {len(ctx.guild.voice_channels)} Voice', inline=True)
-  await ctx.send(embed=embed)
+  await ctx.reply(embed=embed)
 
-  
+
+@client.command()
+async def links(ctx):
+  supportem=discord.Embed(title="Muzocco! Support Server", url="https://dsc.gg/muzocco-support", description="Hey there, Muzocco! Support Server has all of Musocco's updates & GitHub's and more!\n\nJoin now!\nhttps://discord.gg/s9NtJADv\nhttps://dsc.gg/muzocco-support", color=0x2F3136)
+  inviteem=discord.Embed(title="Muzocco!", url="https://dsc.gg/muzocco", description="This is Muzocco! The coolest bot ever, invite this bot to your server to listen to music in a VC or use my fun commands!\n\nhttps://dsc.gg/muzocco", color=0x2F3136)
+  await ctx.reply(embed=inviteem)
+  await ctx.reply(embed=supportem)
+
+
 @client.slash_command(name="help")
 async def help(ctx):
   embed=discord.Embed(title="Hey There!\nMuzocco! doesnt have too many commands yet!", description="Commands that are available for beta update are listed below (bigger desc coming soon!)", color=0x2F3136)
@@ -145,6 +154,7 @@ async def help(ctx):
   embed.add_field(name="/si or /serverinfo", value="Shows info for a server Muzocco! is in", inline=True)
   embed.add_field(name="/meme", value="Run this command to see an epic meme", inline=True)
   embed.add_field(name="/av or /avatar", value="Shows avatar (pfp) for pinged user", inline=True)
+  embed.add_field(name="/links", value="Links for invitation to support and to invite Muzocco!")
   embed.set_footer(text=f"Copyright © Muzocco! 2022 All Rights Reserved")
   embed.timestamp = discord.utils.utcnow()
   await ctx.respond(embed=embed)
@@ -223,6 +233,13 @@ async def serverinfo(ctx, member: discord.Member = None):
   embed.add_field(name='💬Channels', value=f'{len(ctx.guild.text_channels)} Text | {len(ctx.guild.voice_channels)} Voice', inline=True)
   await ctx.respond(embed=embed)
 
+  
+@client.slash_command()
+async def links(ctx):
+  supportem=discord.Embed(title="Muzocco! Support Server", url="https://dsc.gg/muzocco-support", description="Hey there, Muzocco! Support Server has all of Musocco's updates & GitHub's and more!\n\nJoin now!\nhttps://discord.gg/s9NtJADv\nhttps://dsc.gg/muzocco-support", color=0x2F3136)
+  inviteem=discord.Embed(title="Muzocco!", url="https://dsc.gg/muzocco", description="This is Muzocco! The coolest bot ever, invite this bot to your server to listen to music in a VC or use my fun commands!\n\nhttps://dsc.gg/muzocco", color=0x2F3136)
+  await ctx.respond(embed=inviteem)
+  await ctx.respond(embed=supportem)
 
 keep_alive()
 starttime = time.time()
