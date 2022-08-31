@@ -1,7 +1,0 @@
-Date bot was created: Aug 8th, 2022
-Version: Beta 0.0.2
-Partners: None
-Music Commands: 0
-Total Commands: 12
-Slash Commands: 6
-Other Prefix Commands: 6
