@@ -1,4 +1,4 @@
-import discord, json, os, random, asyncio, string, time, hostingserver, requests
+import discord, json, os, random, asyncio, string, time, requests
 from Cog import staff
 from Cog import music
 from discord.ext import commands, tasks
