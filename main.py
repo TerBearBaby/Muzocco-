@@ -3,9 +3,11 @@ from Cog import staff
 from Cog import music
 from discord.ext import commands, tasks
 from datetime import datetime
-from hostingserver import keep_alive
 from discord.ui import Button, View
 from requests import get
+import dotenv
+
+dotenv.load_dotenv()
 
 # imports things needed for bot (modules needed)
 
@@ -172,6 +174,5 @@ for file in os.listdir('Cog'):
       client.load_extension(f'Cog.' + file[:-3]) 
 
 
-keep_alive()
 starttime = time.time()
 client.run(os.getenv("TOKEN"))
