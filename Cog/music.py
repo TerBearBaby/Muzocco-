@@ -41,7 +41,7 @@ class Music(Cog):
 
         await wavelink.NodePool.create_node(bot=self.client,
                                             host="127.0.0.1",
-                                            port="8080",
+                                            port="2333",
                                             password="youshallnotpass",
                                             region="us-central")
 
