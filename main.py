@@ -90,7 +90,7 @@ async def botinfo(ctx):
   link = Button(label='Dashboard', url='https://terbearbaby.github.io/Muzocco-')
   view = View()
   view.add_item(link)
-  embed = discord.Embed(title="Bot Information", description=f"**Head Info:**\nHost: Muzocco-Test.pianoidol.repl.co\nDate Created: August 8th, 2022 8/8/2022\n\n**Statistics:**\nPing: {round (client.latency * 1000)} ms\nUptime: {time.time() - starttime} seconds\n\n**Other Info:**\nPartners: None", color=0x2F3136)
+  embed = discord.Embed(title="Bot Information", description=f"**Head Info:**\nHost: Muzocco-Test.pianoidol.repl.co\nDate Created: August 8th, 2022 8/8/2022\n\n**Statistics:**\nPing: {round (client.latency * 1000)} ms\nUptime: {time.time() - starttime} seconds\n\n**Other Info:**\nPartners: <@977998058031833188>'s Talking Ben Bot <@994213404371861544> https://talking-ben-dbot.github.io/", color=0x2F3136)
   embed.set_footer(text="DM Terbearbaby#6960 if you have any complaints")
   await ctx.respond(embed=embed, view=view)
 
