@@ -1,6 +1,6 @@
 import discord, json, os, random, asyncio, string, time, requests
-from Cog import staff
-from Cog import music
+from cog import staff
+from cog import music
 from discord.ext import commands, tasks
 from datetime import datetime
 from discord.ui import Button, View
