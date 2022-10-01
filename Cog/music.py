@@ -93,7 +93,7 @@ class Music(Cog):
         embed = discord.Embed(title=f"Connected to {channel.name}",
                               color=ctx.author.color)
 
-        await ctx.send(embed=embed)
+        await ctx.respond(embed=embed)
 
     @slash_command(name="leave")
     async def leave_command(self, ctx):
@@ -117,7 +117,7 @@ class Music(Cog):
         embed = discord.Embed(title=f"Disconnected from {player.channel.name}",
                               color=ctx.author.color)
 
-        await ctx.send(embed=embed)
+        await ctx.respond(embed=embed)
 
     @slash_command(name="play")
     async def play_command(self, ctx, search: str):
@@ -161,7 +161,7 @@ class Music(Cog):
         embed = discord.Embed(title=f"Added {search.title} to the queue",
                               color=ctx.author.color)
 
-        await ctx.send(embed=embed)
+        await ctx.respond(embed=embed)
 
     @slash_command(name="stop")
     async def stop_command(self, ctx):
@@ -188,11 +188,11 @@ class Music(Cog):
                 title=f"Stopped playing {player.current.title}",
                 color=ctx.author.color)
 
-            return await ctx.send(embed=embed)
+            return await ctx.respond(embed=embed)
 
         else:
 
-            return await ctx.send("The client is not playing anything!")
+            return await ctx.respond("The client is not playing anything!")
 
     @slash_command(name="pause")
     async def pause_command(self, ctx):
@@ -220,15 +220,15 @@ class Music(Cog):
                 embed = discord.Embed(title=f"Paused {player.current.title}",
                                       color=ctx.author.color)
 
-                return await ctx.send(embed=embed)
+                return await ctx.respond(embed=embed)
 
             else:
 
-                return await ctx.send("The client is not playing anything!")
+                return await ctx.respond("The client is not playing anything!")
 
         else:
 
-            return await ctx.send("The client is already paused!")
+            return await ctx.respond("The client is already paused!")
 
     @slash_command(name="resume")
     async def resume_command(self, ctx):
@@ -244,7 +244,7 @@ class Music(Cog):
 
         if player is None:
 
-            return await ctx.send(
+            return await ctx.respond(
                 "The client is not connected to a voice channel!")
 
         if player.is_paused():
@@ -254,11 +254,11 @@ class Music(Cog):
             embed = discord.Embed(title=f"Resumed {player.current.title}",
                                   color=ctx.author.color)
 
-            return await ctx.send(embed=embed)
+            return await ctx.respond(embed=embed)
 
         else:
 
-            return await ctx.send("The client is not paused!")
+            return await ctx.respond("The client is not paused!")
 
     @slash_command(name="skip")
     async def skip_command(self, ctx):
@@ -274,7 +274,7 @@ class Music(Cog):
 
         if player is None:
 
-            return await ctx.send(
+            return await ctx.respond(
                 "The client is not connected to a voice channel!")
 
         if player.is_playing():
@@ -290,11 +290,11 @@ class Music(Cog):
             embed = discord.Embed(title=f"Now playing {player.track.title}",
                                   color=ctx.author.color)
 
-            return await ctx.send(embed=embed)
+            return await ctx.respond(embed=embed)
 
         else:
 
-            return await ctx.send("The client is not playing anything!")
+            return await ctx.respond("The client is not playing anything!")
 
     @slash_command(name="queue")
     async def queue_command(self, ctx):
@@ -310,12 +310,12 @@ class Music(Cog):
 
         if player is None:
 
-            return await ctx.send(
+            return await ctx.respond(
                 "The client is not connected to a voice channel!")
 
         if player.queue.is_empty:
 
-            return await ctx.send("The queue is empty!")
+            return await ctx.respond("The queue is empty!")
 
         embed = discord.Embed(title=f"Queue", color=ctx.author.color)
 
@@ -334,7 +334,7 @@ class Music(Cog):
                             value="\u200B",
                             inline=True)
 
-        await ctx.send(embed=embed)
+        await ctx.respond(embed=embed)
 
 
 def setup(client):
