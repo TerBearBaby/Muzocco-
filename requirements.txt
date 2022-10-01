@@ -1,0 +1,5 @@
+numpy~=1.23.3
+py-cord[speed]
+requests
+python-dotenv
+wavelink
