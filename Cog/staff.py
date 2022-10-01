@@ -35,12 +35,25 @@ class staff(commands.Cog):
         await ctx.respond('No Perms')
 
 
+    @commands.slash_command(name='unban', description='unban <user> with <reason>')
+    @commands.has_guild_permissions(administrator=True)
+    async def unban(self, ctx, member: discord.Member, reason):
+      try:
+        unmuteem=discord.Embed(title=f"Unban{member.mention}", color=0x2F3136)
+        await member.unban(reason=reason)
+        await ctx.respond(embed=unmuteem)
+        await self.client.get_channel(channel).send(f'{member.name} was unbanned in {ctx.guild}')
+      except discord.Forbidden:
+        await ctx.respond('No Perms')
+  
+  
     @commands.slash_command(name="purge", description="Deletes certain amount of messages **ADMIN**")
     @commands.has_permissions(administrator=True)
     async def purge(self, ctx, amount=10):
       try:
         print('Purge enabled')
         await ctx.channel.purge(limit=int(amount) + 1)
+        await ctx.respond("Purged channel", ephemeral=True)
         await self.client.get_channel(channel).send(f'{ctx.channel} was purged by {ctx.author.name} \n User Id: {ctx.author.id} \n \n \n **CTX** \n {ctx} \n -----------------------------------')
       except discord.Forbidden:
         await ctx.respond('No Perms')
