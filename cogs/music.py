@@ -1,14 +1,9 @@
-import wavelink
-
-import discord
-
+import logging
 import typing
 
-from discord.ext.commands import Cog
-
-from discord.ext.commands import slash_command
-
-import logging
+import discord
+import wavelink
+from discord.ext.commands import Cog, slash_command
 
 
 class Queue(wavelink.Queue):

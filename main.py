@@ -1,11 +1,13 @@
-import discord, json, os, random, asyncio, string, time, requests
-from cog import staff
-from cog import music
+import json
+import os
+import random
+import time
+
+import discord
+import dotenv
 from discord.ext import commands, tasks
-from datetime import datetime
 from discord.ui import Button, View
 from requests import get
-import dotenv
 
 dotenv.load_dotenv()
 

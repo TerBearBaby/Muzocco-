@@ -1,4 +1,6 @@
-import discord, datetime
+import datetime
+
+import discord
 from discord.ext import commands
 
 channel = 1014425666990657576
