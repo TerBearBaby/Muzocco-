@@ -7,10 +7,11 @@ import wavelink
 from discord.ext.commands import Cog, slash_command
 from discord.ext import commands
 from discord.ui import View, Button
+import datetime
 
 
 def display_track(track: wavelink.Track) -> str:
-    return f"{track.title} by {track.author}"
+    return f"{track.title} by {track.author} [{str(datetime.timedelta(seconds=track.length))}]"
 
 
 class TrackButton(Button):
