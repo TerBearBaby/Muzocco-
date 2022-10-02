@@ -170,6 +170,9 @@ class Music(Cog):
 
         """
 
+        if not ctx.author.voice and not ctx.guild.voice_client:
+            return await ctx.respond("Neither of us are connected to a voice channel.")
+
         search = (await wavelink.YouTubeTrack.search(query=search))[:5]
         
         embed = discord.Embed(
