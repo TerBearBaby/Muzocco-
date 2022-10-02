@@ -67,8 +67,7 @@ class Music(Cog):
         if channel is None:
             channel = ctx.author.voice.channel
 
-        node = wavelink.NodePool.get_node()
-        player = node.get_player(ctx.guild)
+        player = self.get_player(ctx)
 
         if player is not None:
             if player.is_connected():
@@ -90,8 +89,7 @@ class Music(Cog):
 
         """
 
-        node = wavelink.NodePool.get_node()
-        player = node.get_player(ctx.guild)
+        player = self.get_player(ctx)
 
         if player is None:
             return await ctx.send("The client is not connected to a voice channel!")
@@ -150,8 +148,7 @@ class Music(Cog):
 
         """
 
-        node = wavelink.NodePool.get_node()
-        player = node.get_player(ctx.guild)
+        player = self.get_player(ctx)
 
         if player is None:
             return await ctx.send("The client is not connected to a voice channel!")
@@ -176,8 +173,7 @@ class Music(Cog):
 
         """
 
-        node = wavelink.NodePool.get_node()
-        player = node.get_player(ctx.guild)
+        player = self.get_player(ctx)
 
         if player is None:
             return await ctx.send("The client is not connected to a voice channel!")
@@ -205,9 +201,7 @@ class Music(Cog):
 
         """
 
-        node = wavelink.NodePool.get_node()
-
-        player = node.get_player(ctx.guild)
+        player = self.get_player(ctx)
 
         if player is None:
             return await ctx.respond(
@@ -231,9 +225,7 @@ class Music(Cog):
 
         """
 
-        node = wavelink.NodePool.get_node()
-
-        player = node.get_player(ctx.guild)
+        player = self.get_player(ctx)
 
         if player is None:
             return await ctx.respond("The client is not connected to a voice channel!")
@@ -262,9 +254,7 @@ class Music(Cog):
 
         """
 
-        node = wavelink.NodePool.get_node()
-
-        player = node.get_player(ctx.guild)
+        player = self.get_player(ctx)
 
         if player is None:
             return await ctx.respond("The client is not connected to a voice channel!")
