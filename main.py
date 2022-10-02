@@ -199,9 +199,9 @@ async def links(ctx):
     await ctx.respond(embed=supportem, view=view)
 
 
-for file in os.listdir('Cog'):
+for file in os.listdir('cogs'):
     if file.endswith('.py'):
-        client.load_extension(f'Cog.' + file[:-3])
+        client.load_extension(f'cogs.' + file[:-3])
 
 
 starttime = time.time()
