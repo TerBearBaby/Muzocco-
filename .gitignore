@@ -1,4 +1,5 @@
 .env
 __pycache__/
-binaries/Lavalink.jar
+binaries/
+application.yml
 logs/

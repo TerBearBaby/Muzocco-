@@ -76,18 +76,11 @@ class Music(Cog):
 
     async def create_nodes(self) -> None:
         await self.client.wait_until_ready()
-        try:
-            await wavelink.NodePool.create_node(bot=self.client,
-                                                host="127.0.0.1",
-                                                port="2333",
-                                                password="youshallnotpass",
-                                                region="us-central")
-        except:
-            await wavelink.NodePool.create_node(bot=self.client,
-                                                host="127.0.0.1",
-                                                port="8080",
-                                                password="youshallnotpass",
-                                                region="us-central")
+        await wavelink.NodePool.create_node(bot=self.client,
+                                            host="127.0.0.1",
+                                            port="2333",
+                                            password="youshallnotpass",
+                                            region="us-central")
 
     def get_player(self, ctx: discord.ApplicationContext) -> wavelink.Player:
         node = wavelink.NodePool.get_node()
