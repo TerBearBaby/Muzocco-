@@ -8,6 +8,7 @@ from discord.ext.commands import Cog, slash_command
 from discord.ext import commands
 from discord.ui import View, Button
 import datetime
+import os
 
 
 def display_track(track: wavelink.Track) -> str:
@@ -79,7 +80,7 @@ class Music(Cog):
         await wavelink.NodePool.create_node(bot=self.client,
                                             host="127.0.0.1",
                                             port="2333",
-                                            password="youshallnotpass",
+                                            password=os.getenv("LAVALINK_PASS"),
                                             region="us-central")
 
     def get_player(self, ctx: discord.ApplicationContext) -> wavelink.Player:
