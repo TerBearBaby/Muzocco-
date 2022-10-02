@@ -264,7 +264,7 @@ class Music(Cog):
 
         embed = discord.Embed(title=f"Queue", color=ctx.author.color)
         embed.set_author(
-            name=f"Currently Playing: {self.display_track(track)}", icon_url=ctx.author.avatar.url)
+            name=f"Currently Playing: {self.display_track(player.track)}", icon_url=ctx.author.avatar.url)
         embed.set_thumbnail(url=ctx.guild.icon.url)
 
         num = 0
