@@ -1,3 +1,4 @@
+# from __future__ import annotations
 import logging
 import typing
 
@@ -5,7 +6,61 @@ import discord
 import wavelink
 from discord.ext.commands import Cog, slash_command
 from discord.ext import commands
+from discord.ui import View, Button
 
+
+def display_track(track: wavelink.Track) -> str:
+    return f"{track.title} by {track.author}"
+
+
+class TrackButton(Button):
+    def __init__(self, track: wavelink.Track, place, pool: "TrackButtonPool", ctx: discord.ApplicationContext):
+        super().__init__(label=str(place), style=discord.ButtonStyle.primary)
+        self.pool = pool
+        self.track = track
+        self.ctx = ctx
+
+        self.pool.add_button(self)
+
+    async def callback(self, interaction: discord.Interaction):
+        await self.pool.disable_buttons()
+
+        if not self.ctx.guild.voice_client:
+            vc: wavelink.Player = await self.ctx.author.voice.channel.connect(
+                cls=wavelink.Player)
+
+        else:
+            vc: wavelink.Player = self.ctx.guild.voice_client
+
+        if not vc.is_playing():
+            await vc.play(self.track)
+            embed = discord.Embed(
+                title=f"Now playing {display_track(self.track)}", color=self.ctx.author.color)
+
+            return await interaction.response.send_message(embed=embed)
+
+        await vc.queue.put_wait(self.track)
+
+        embed = discord.Embed(
+            title=f"Added {self.track.title} to the queue", color=self.ctx.author.color)
+
+        await interaction.response.send_message(embed=embed)
+        
+
+class TrackButtonPool(View):
+    def __init__(self):
+        super().__init__()
+
+    def add_button(self, button: TrackButton):
+        self.children.append(button)
+    
+    async def disable_buttons(self):
+        for button in self.children:
+            button.disabled = True
+
+        if self.message:
+            await self.message.edit(view=self)
+    
 
 class Queue(wavelink.Queue):
     def __init__(self):
@@ -30,9 +85,6 @@ class Music(Cog):
         node = wavelink.NodePool.get_node()
         player = node.get_player(ctx.guild)
         return player
-
-    def display_track(self, track: wavelink.Track) -> str:
-        return f"{track.title} by {track.author}"
 
     @Cog.listener()
     async def on_ready(self):
@@ -117,28 +169,21 @@ class Music(Cog):
 
         """
 
-        search = await wavelink.YouTubeTrack.search(query=search, return_first=True)
-
-        if not ctx.guild.voice_client:
-            vc: wavelink.Player = await ctx.author.voice.channel.connect(
-                cls=wavelink.Player)
-
-        else:
-            vc: wavelink.Player = ctx.guild.voice_client
-
-        if not vc.is_playing():
-            await vc.play(search)
-            embed = discord.Embed(
-                title=f"Now playing {self.display_track(search)}", color=ctx.author.color)
-
-            return await ctx.respond(embed=embed)
-
-        await vc.queue.put_wait(search)
-
+        search = (await wavelink.YouTubeTrack.search(query=search))[:5]
+        
         embed = discord.Embed(
-            title=f"Added {search.title} to the queue", color=ctx.author.color)
+            title="Search Results", color=ctx.author.color,
+            )
 
-        await ctx.respond(embed=embed)
+        pool = TrackButtonPool()
+
+        i = 0
+        for track in search:
+            i += 1
+            embed.add_field(name=f"{i}. " + track.title, value=track.author, inline=False)
+            TrackButton(track, i, pool, ctx)
+
+        await ctx.respond(embed=embed, view=pool)
 
     @slash_command(name="stop")
     async def stop_command(self, ctx: discord.ApplicationContext):
@@ -158,7 +203,7 @@ class Music(Cog):
             await player.stop()
 
             embed = discord.Embed(
-                title=f"Stopped playing {self.display_track(track)}", color=ctx.author.color)
+                title=f"Stopped playing {display_track(track)}", color=ctx.author.color)
 
             return await ctx.respond(embed=embed)
 
@@ -183,7 +228,7 @@ class Music(Cog):
                 await player.pause()
 
                 embed = discord.Embed(
-                    title=f"Paused {self.display_track(player.track)}", color=ctx.author.color)
+                    title=f"Paused {display_track(player.track)}", color=ctx.author.color)
 
                 return await ctx.respond(embed=embed)
 
@@ -210,7 +255,7 @@ class Music(Cog):
         if player.is_paused():
             await player.resume()
             embed = discord.Embed(
-                title=f"Resumed {self.display_track(player.track)}", color=ctx.author.color)
+                title=f"Resumed {display_track(player.track)}", color=ctx.author.color)
 
             return await ctx.respond(embed=embed)
 
@@ -239,7 +284,7 @@ class Music(Cog):
             await player.play(track)
 
             embed = discord.Embed(
-                title=f"Now playing {self.display_track(track)}", color=ctx.author.color)
+                title=f"Now playing {display_track(track)}", color=ctx.author.color)
 
             return await ctx.respond(embed=embed)
 
@@ -264,14 +309,14 @@ class Music(Cog):
 
         embed = discord.Embed(title=f"Queue", color=ctx.author.color)
         embed.set_author(
-            name=f"Currently Playing: {self.display_track(player.track)}", icon_url=ctx.author.avatar.url)
+            name=f"Currently Playing: {display_track(player.track)}", icon_url=ctx.author.avatar.url)
         embed.set_thumbnail(url=ctx.guild.icon.url)
 
         num = 0
 
         for track in player.queue:
             num += 1
-            embed.add_field(name=f"{num}. {self.display_track(track)}",
+            embed.add_field(name=f"{num}. {display_track(track)}",
                             value="\u200B", inline=True)
 
         await ctx.respond(embed=embed)

@@ -152,3 +152,6 @@ class Misc(Cog):
                                 description="This is Muzocco! The coolest bot ever, invite this bot to your server to listen to music in a VC or use my fun commands!\n\nhttps://dsc.gg/muzocco", color=0x2F3136)
         await ctx.respond(embed=inviteem)
         await ctx.respond(embed=supportem, view=view)
+
+def setup(client):
+    client.add_cog(Misc(client))
