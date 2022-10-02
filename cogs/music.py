@@ -18,11 +18,6 @@ class Music(Cog):
         self.client = client
         client.loop.create_task(self.create_nodes())
 
-    def get_player(self, ctx: discord.ApplicationContext) -> wavelink.Player:
-        node = wavelink.NodePool.get_node()
-        player = node.get_player(ctx.guild)
-        return player
-
     async def create_nodes(self) -> None:
         await self.client.wait_until_ready()
         await wavelink.NodePool.create_node(bot=self.client,
@@ -30,6 +25,14 @@ class Music(Cog):
                                             port="2333",
                                             password="youshallnotpass",
                                             region="us-central")
+
+    def get_player(self, ctx: discord.ApplicationContext) -> wavelink.Player:
+        node = wavelink.NodePool.get_node()
+        player = node.get_player(ctx.guild)
+        return player
+
+    def display_track(self, track: wavelink.Track) -> str:
+        return f"{track.title} by {track.author}"
 
     @Cog.listener()
     async def on_ready(self):
@@ -128,7 +131,7 @@ class Music(Cog):
         if not vc.is_playing():
             await vc.play(search)
             embed = discord.Embed(
-                title=f"Now playing {search.title}", color=ctx.author.color)
+                title=f"Now playing {self.display_track(search)}", color=ctx.author.color)
 
             return await ctx.send(embed=embed)
 
@@ -154,11 +157,11 @@ class Music(Cog):
             return await ctx.send("The client is not connected to a voice channel!")
 
         if player.is_playing():
-            track_title = player.track.info["title"]
+            track = player.track
             await player.stop()
 
             embed = discord.Embed(
-                title=f"Stopped playing {track_title}", color=ctx.author.color)
+                title=f"Stopped playing {self.display_track(track)}", color=ctx.author.color)
 
             return await ctx.respond(embed=embed)
 
@@ -184,7 +187,7 @@ class Music(Cog):
                 await player.pause()
 
                 embed = discord.Embed(
-                    title=f"Paused {player.current.title}", color=ctx.author.color)
+                    title=f"Paused {self.display_track(player.track)}", color=ctx.author.color)
 
                 return await ctx.respond(embed=embed)
 
@@ -213,7 +216,7 @@ class Music(Cog):
         if player.is_paused():
             await player.resume()
             embed = discord.Embed(
-                title=f"Resumed {player.current.title}", color=ctx.author.color)
+                title=f"Resumed {self.display_track(player.track)}", color=ctx.author.color)
 
             return await ctx.respond(embed=embed)
 
@@ -244,7 +247,7 @@ class Music(Cog):
             await player.play(track)
 
             embed = discord.Embed(
-                title=f"Now playing {player.track.title}", color=ctx.author.color)
+                title=f"Now playing {self.display_track(track)}", color=ctx.author.color)
 
             return await ctx.respond(embed=embed)
 
@@ -271,14 +274,14 @@ class Music(Cog):
 
         embed = discord.Embed(title=f"Queue", color=ctx.author.color)
         embed.set_author(
-            name=f"Currently Playing: {player.track.title}", icon_url=ctx.author.avatar.url)
+            name=f"Currently Playing: {self.display_track(track)}", icon_url=ctx.author.avatar.url)
         embed.set_thumbnail(url=ctx.guild.icon.url)
 
         num = 0
 
         for track in player.queue:
             num += 1
-            embed.add_field(name=f"{num}. {track.title}",
+            embed.add_field(name=f"{num}. {self.display_track(track)}",
                             value="\u200B", inline=True)
 
         await ctx.respond(embed=embed)
