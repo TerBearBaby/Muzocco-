@@ -9,6 +9,9 @@ from discord.ext import commands
 from discord.ui import View, Button
 import datetime
 import os
+import dotenv
+
+dotenv.load_dotenv()
 
 
 def display_track(track: wavelink.Track) -> str:
