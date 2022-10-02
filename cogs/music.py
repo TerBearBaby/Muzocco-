@@ -154,10 +154,11 @@ class Music(Cog):
             return await ctx.send("The client is not connected to a voice channel!")
 
         if player.is_playing():
+            track_title = player.track.info["title"]
             await player.stop()
 
             embed = discord.Embed(
-                title=f"Stopped playing {player.current.title}", color=ctx.author.color)
+                title=f"Stopped playing {track_title}", color=ctx.author.color)
 
             return await ctx.respond(embed=embed)
 
