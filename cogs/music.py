@@ -4,6 +4,7 @@ import typing
 import discord
 import wavelink
 from discord.ext.commands import Cog, slash_command
+from discord.ext import commands
 
 
 class Queue(wavelink.Queue):
@@ -13,7 +14,7 @@ class Queue(wavelink.Queue):
 
 
 class Music(Cog):
-    def __init__(self, client):
+    def __init__(self, client: commands.Bot):
         self.client = client
         client.loop.create_task(self.create_nodes())
 
@@ -22,18 +23,18 @@ class Music(Cog):
         player = node.get_player(ctx.guild)
         return player
 
-    @Cog.listener()
-    async def on_ready(self):
-        if not self.client.is_ready:
-            self.client.cogs_ready.ready_up('Commands')
-
-    async def create_nodes(self):
+    async def create_nodes(self) -> None:
         await self.client.wait_until_ready()
         await wavelink.NodePool.create_node(bot=self.client,
                                             host="127.0.0.1",
                                             port="2333",
                                             password="youshallnotpass",
                                             region="us-central")
+
+    @Cog.listener()
+    async def on_ready(self):
+        if not self.client.is_ready:
+            self.client.cogs_ready.ready_up('Commands')
 
     @Cog.listener()
     async def on_wavelink_node_ready(self, node: wavelink.Node):
@@ -51,7 +52,7 @@ class Music(Cog):
 
     @slash_command(name="join")
     async def join_command(self,
-                           ctx,
+                           ctx: discord.ApplicationContext,
                            channel: typing.Optional[
                                discord.VoiceChannel] = None):
         """
@@ -79,7 +80,7 @@ class Music(Cog):
         await ctx.respond(embed=embed)
 
     @slash_command(name="leave")
-    async def leave_command(self, ctx):
+    async def leave_command(self, ctx: discord.ApplicationContext):
         """
 
         Disconnect the bot from the current channel
@@ -100,7 +101,7 @@ class Music(Cog):
         await ctx.respond(embed=embed)
 
     @slash_command(name="play")
-    async def play_command(self, ctx, search: str):
+    async def play_command(self, ctx: discord.ApplicationContext, search: str):
         """
 
         Play a song
@@ -139,7 +140,7 @@ class Music(Cog):
         await ctx.respond(embed=embed)
 
     @slash_command(name="stop")
-    async def stop_command(self, ctx):
+    async def stop_command(self, ctx: discord.ApplicationContext):
         """
 
         Stop the current song from playing
@@ -164,7 +165,7 @@ class Music(Cog):
             return await ctx.respond("The client is not playing anything!")
 
     @slash_command(name="pause")
-    async def pause_command(self, ctx):
+    async def pause_command(self, ctx: discord.ApplicationContext):
         """
 
         Pause the current song
@@ -193,7 +194,7 @@ class Music(Cog):
             return await ctx.respond("The client is already paused!")
 
     @slash_command(name="resume")
-    async def resume_command(self, ctx):
+    async def resume_command(self, ctx: discord.ApplicationContext):
         """
 
         Resume the current song
@@ -219,7 +220,7 @@ class Music(Cog):
             return await ctx.respond("The client is not paused!")
 
     @slash_command(name="skip")
-    async def skip_command(self, ctx):
+    async def skip_command(self, ctx: discord.ApplicationContext):
         """
 
         Skip the current song playing
@@ -250,7 +251,7 @@ class Music(Cog):
             return await ctx.respond("The client is not playing anything!")
 
     @slash_command(name="queue")
-    async def queue_command(self, ctx):
+    async def queue_command(self, ctx: discord.ApplicationContext):
         """
 
         Check what current songs are in the queue

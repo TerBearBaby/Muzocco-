@@ -16,7 +16,7 @@ class staff(commands.Cog):
 
     @commands.slash_command(name='mute', description='Mutes <user> for <duration> minutes because of <reason> using discords new timeouts')
     @commands.has_guild_permissions(moderate_members=True)
-    async def mute(self, ctx, member: discord.Member, duration, reason):
+    async def mute(self, ctx: discord.ApplicationContext, member: discord.Member, duration, reason):
         try:
             minutes = datetime.timedelta(minutes=int(duration))
             await member.timeout_for(minutes, reason=reason)
@@ -29,7 +29,7 @@ class staff(commands.Cog):
 
     @commands.slash_command(name='unmute', description='unmuting <user> with <reason> using new discord timeouts')
     @commands.has_guild_permissions(moderate_members=True)
-    async def unmute(self, ctx, member: discord.Member, reason):
+    async def unmute(self, ctx: discord.ApplicationContext, member: discord.Member, reason):
         try:
             unmuteem = discord.Embed(
                 title=f"Unmuted {member.mention}", color=0x2F3136)
@@ -41,7 +41,7 @@ class staff(commands.Cog):
 
     @commands.slash_command(name='unban', description='unban <user> with <reason>')
     @commands.has_guild_permissions(administrator=True)
-    async def unban(self, ctx, member: discord.Member, reason):
+    async def unban(self, ctx: discord.ApplicationContext, member: discord.Member, reason):
         try:
             unmuteem = discord.Embed(
                 title=f"Unban{member.mention}", color=0x2F3136)
@@ -53,7 +53,7 @@ class staff(commands.Cog):
 
     @commands.slash_command(name="purge", description="Deletes certain amount of messages **ADMIN**")
     @commands.has_permissions(administrator=True)
-    async def purge(self, ctx, amount=10):
+    async def purge(self, ctx: discord.ApplicationContext, amount=10):
         try:
             print('Purge enabled')
             await ctx.channel.purge(limit=int(amount) + 1)
@@ -64,7 +64,7 @@ class staff(commands.Cog):
 
     @commands.slash_command(name="ban", description="Bans specified user | /ban <user> <reason>")
     @commands.has_permissions(moderate_members=True)
-    async def ban(self, ctx, member: discord.Member, *, reason=None):
+    async def ban(self, ctx: discord.ApplicationContext, member: discord.Member, *, reason=None):
         try:
             banem = discord.Embed(
                 title=f"Banned {member.mention} for {reason}", color=0x2F3136)
@@ -76,7 +76,7 @@ class staff(commands.Cog):
 
     @commands.slash_command(name="kick", description="Kicks specified user | /kick <user> <reason>")
     @commands.has_permissions(administrator=True)
-    async def kick(self, ctx, member: discord.Member, *, reason=None):
+    async def kick(self, ctx: discord.ApplicationContext, member: discord.Member, *, reason=None):
         try:
             kickem = discord.Embed(
                 title=f"Kicked {member.mention} for {reason}", color=0x2F3136)

@@ -57,14 +57,14 @@ update_presence.start()
 
 
 @client.slash_command(name="suggest", description="DM's Owner(s) (content) for your suggestion(s)")
-async def suggest(ctx, *, content):
+async def suggest(ctx: discord.ApplicationContext, *, content):
     await client.get_user(800886153783279658).send(f"{ctx.author} suggests {content}")
     await client.get_user(977998058031833188).send(f"{ctx.author} suggests {content}")
     await ctx.respond("Suggestion sent!", ephemeral=True)
 
 
 @client.slash_command(name="help", description="Help page with commands for Muzocco!")
-async def help(ctx):
+async def help(ctx: discord.ApplicationContext):
     link = Button(label='Dashboard',
                   url='https://terbearbaby.github.io/Muzocco-')
     view = View()
@@ -95,14 +95,14 @@ async def help(ctx):
 
 
 @client.slash_command(name="echo", description="Repeats whatever you say [ /echo (content) ]")
-async def echo(ctx, *, content):
+async def echo(ctx: discord.ApplicationContext, *, content):
     embed = discord.Embed(
         title=f"{content}", description=f"Repeated {content}", color=0x2F3136)
     await ctx.respond(embed=embed)
 
 
 @client.slash_command(name="bot_info", description="Bot info for Muzocco!")
-async def botinfo(ctx):
+async def botinfo(ctx: discord.ApplicationContext):
     link = Button(label='Dashboard',
                   url='https://terbearbaby.github.io/Muzocco-')
     view = View()
@@ -114,7 +114,7 @@ async def botinfo(ctx):
 
 
 @client.slash_command(name="user_info", description="User info for specified user")
-async def userinfo(ctx, user: discord.Member = None):
+async def userinfo(ctx: discord.ApplicationContext, user: discord.Member = None):
     guild = ctx.guild
     if user == None:
         user = ctx.author
@@ -142,7 +142,7 @@ async def userinfo(ctx, user: discord.Member = None):
 
 
 @client.slash_command(name="avatar", description="Shows profile picture for specified user")
-async def avatar(ctx, member: discord.Member = None):
+async def avatar(ctx: discord.ApplicationContext, member: discord.Member = None):
     if not ctx.author.bot:
         if member == None:
             member = ctx.author
@@ -154,7 +154,7 @@ async def avatar(ctx, member: discord.Member = None):
 
 
 @client.slash_command(name="meme", description="Funny memes")
-async def meme(ctx):
+async def meme(ctx: discord.ApplicationContext):
     content = get("https://meme-api.herokuapp.com/gimme").text
     data = json.loads(content)
 
@@ -170,7 +170,7 @@ async def meme(ctx):
 
 
 @client.slash_command(name="server_info", description="Info for a server that command is ran in")
-async def serverinfo(ctx):
+async def serverinfo(ctx: discord.ApplicationContext):
     embed = discord.Embed(title=f"{ctx.guild.name} Info",
                           description="Information of this Server", color=0x2F3136)
     embed.add_field(name='🆔Server ID', value=f"{ctx.guild.id}", inline=True)
@@ -186,7 +186,7 @@ async def serverinfo(ctx):
 
 
 @client.slash_command(name="links", description="Links for Muzocco!")
-async def links(ctx):
+async def links(ctx: discord.ApplicationContext):
     link = Button(label='Dashboard',
                   url='https://terbearbaby.github.io/Muzocco-')
     view = View()
