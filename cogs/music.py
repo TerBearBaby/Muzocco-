@@ -71,7 +71,7 @@ class Music(Cog):
 
         if player is not None:
             if player.is_connected():
-                return await ctx.send(
+                return await ctx.respond(
                     "client is already connected to a voice channel!")
 
         await channel.connect(cls=wavelink.Player)
@@ -92,7 +92,7 @@ class Music(Cog):
         player = self.get_player(ctx)
 
         if player is None:
-            return await ctx.send("The client is not connected to a voice channel!")
+            return await ctx.respond("The client is not connected to a voice channel!")
 
         await player.disconnect()
 
@@ -131,7 +131,7 @@ class Music(Cog):
             embed = discord.Embed(
                 title=f"Now playing {self.display_track(search)}", color=ctx.author.color)
 
-            return await ctx.send(embed=embed)
+            return await ctx.respond(embed=embed)
 
         await vc.queue.put_wait(search)
 
@@ -151,7 +151,7 @@ class Music(Cog):
         player = self.get_player(ctx)
 
         if player is None:
-            return await ctx.send("The client is not connected to a voice channel!")
+            return await ctx.respond("The client is not connected to a voice channel!")
 
         if player.is_playing():
             track = player.track
@@ -176,7 +176,7 @@ class Music(Cog):
         player = self.get_player(ctx)
 
         if player is None:
-            return await ctx.send("The client is not connected to a voice channel!")
+            return await ctx.respond("The client is not connected to a voice channel!")
 
         if not player.is_paused():
             if player.is_playing():
@@ -232,7 +232,7 @@ class Music(Cog):
 
         if player.is_playing():
             if player.queue.is_empty:
-                return await ctx.send("The queue is empty!")
+                return await ctx.respond("The queue is empty!")
 
             track = player.queue.get()
 
