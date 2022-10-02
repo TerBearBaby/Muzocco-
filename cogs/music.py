@@ -17,6 +17,11 @@ class Music(Cog):
         self.client = client
         client.loop.create_task(self.create_nodes())
 
+    def get_player(self, ctx: discord.ApplicationContext) -> wavelink.Player:
+        node = wavelink.NodePool.get_node()
+        player = node.get_player(ctx.guild)
+        return player
+
     @Cog.listener()
     async def on_ready(self):
         if not self.client.is_ready:
