@@ -90,11 +90,6 @@ class Music(Cog):
                                             region="us-central")
 
     @Cog.listener()
-    async def on_ready(self):
-        if not self.client.is_ready:
-            self.client.cogs_ready.ready_up('Commands')
-
-    @Cog.listener()
     async def on_wavelink_node_ready(self, node: wavelink.Node):
         logging.info(f"Node <{node.identifier}> is ready!")
 
