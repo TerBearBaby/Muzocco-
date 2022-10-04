@@ -83,7 +83,6 @@ class Music(Cog):
                                             password=os.getenv("LAVALINK_PASS"),
                                             region="us-central")
 
-    def get_player(self, ctx: discord.ApplicationContext) -> wavelink.Player:
         node = wavelink.NodePool.get_node()
         player = node.get_player(ctx.guild)
         return player
