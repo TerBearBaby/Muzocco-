@@ -70,6 +70,12 @@ class Queue(wavelink.Queue):
         self.position = 0
 
 
+def get_player(ctx: discord.ApplicationContext) -> wavelink.Player:
+    node = wavelink.NodePool.get_node()
+    player = node.get_player(ctx.guild)
+    return player
+
+
 class Music(Cog):
     def __init__(self, client: commands.Bot):
         self.client = client
@@ -82,10 +88,6 @@ class Music(Cog):
                                             port="2333",
                                             password=os.getenv("LAVALINK_PASS"),
                                             region="us-central")
-
-        node = wavelink.NodePool.get_node()
-        player = node.get_player(ctx.guild)
-        return player
 
     @Cog.listener()
     async def on_ready(self):
@@ -120,7 +122,7 @@ class Music(Cog):
         if channel is None:
             channel = ctx.author.voice.channel
 
-        player = self.get_player(ctx)
+        player = get_player(ctx)
 
         if player is not None:
             if player.is_connected():
@@ -142,7 +144,7 @@ class Music(Cog):
 
         """
 
-        player = self.get_player(ctx)
+        player = get_player(ctx)
 
         if player is None:
             return await ctx.respond("The client is not connected to a voice channel!")
@@ -197,7 +199,7 @@ class Music(Cog):
 
         """
 
-        player = self.get_player(ctx)
+        player = get_player(ctx)
 
         if player is None:
             return await ctx.respond("The client is not connected to a voice channel!")
@@ -222,7 +224,7 @@ class Music(Cog):
 
         """
 
-        player = self.get_player(ctx)
+        player = get_player(ctx)
 
         if player is None:
             return await ctx.respond("The client is not connected to a voice channel!")
@@ -250,7 +252,7 @@ class Music(Cog):
 
         """
 
-        player = self.get_player(ctx)
+        player = get_player(ctx)
 
         if player is None:
             return await ctx.respond(
@@ -274,7 +276,7 @@ class Music(Cog):
 
         """
 
-        player = self.get_player(ctx)
+        player = get_player(ctx)
 
         if player is None:
             return await ctx.respond("The client is not connected to a voice channel!")
@@ -303,7 +305,7 @@ class Music(Cog):
 
         """
 
-        player = self.get_player(ctx)
+        player = get_player(ctx)
 
         if player is None:
             return await ctx.respond("The client is not connected to a voice channel!")
