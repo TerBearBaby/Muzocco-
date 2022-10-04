@@ -4,8 +4,8 @@ import discord
 import os
 import dotenv
 from discord.ext import tasks
-import random
 from itertools import cycle
+import logging
 
 dotenv.load_dotenv()
 
@@ -25,12 +25,14 @@ class Client(discord.Bot, ABC):
             "Some Servers, {guild_count}",
             "Klassick | https://dsc.gg/klassick"
         ])  # Create a cycle, so we can simply use next() to get the next status.
+        logging.basicConfig(level=logging.INFO, format="%(asctime)s - %(name)s - %(levelname)s - %(message)s")
+        self.logger = logging.getLogger("bot")
 
     def load_exts(self):
         for ext in os.listdir("cogs"):
             if ext.endswith(".py"):
                 self.load_extension(f"cogs.{ext[:-3]}")
-                print(f"Loaded {ext[:-3]}")
+                self.logger.info(f"Loaded {ext[:-3]}")
 
     async def on_ready(self):
         """
@@ -38,17 +40,19 @@ class Client(discord.Bot, ABC):
         methods on the client object. This is a lot cleaner and easier to read.
         """
         self.load_exts()
-        print(f"Logged in as {self.user.name}")
+        self.logger.info(f"Logged in as {self.user.name}")
         self.update_presence.start()
 
     @tasks.loop(seconds=60)
     async def update_presence(self):
+        status = next(self.statuses).format(guild_count=len(self.guilds), latency=round(self.latency * 1000))
         await self.change_presence(
             activity=discord.Activity(
                 type=discord.ActivityType.watching,
-                name=next(self.statuses).format(guild_count=len(self.guilds), latency=round(self.latency * 1000))
+                name=status
             )
         )
+        self.logger.debug(f"Updated presence to \"{status}\"")
 
     def run(self):
         super().run(os.getenv("TOKEN"))
