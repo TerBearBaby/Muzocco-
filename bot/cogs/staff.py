@@ -1,7 +1,6 @@
 import datetime
 
 import discord
-from discord.ext import commands
 
 channel = 1014425666990657576
 intents = discord.Intents.default()
@@ -10,12 +9,12 @@ intents.members = True
 intents.message_content = True
 
 
-class staff(commands.Cog):
+class staff(discord.Cog):
     def __init__(self, client):
         self.client = client
 
-    @commands.slash_command(name='mute', description='Mutes <user> for <duration> minutes because of <reason> using discords new timeouts')
-    @commands.has_guild_permissions(moderate_members=True)
+    @discord.command(name='mute', description='Mutes <user> for <duration> minutes because of <reason> using discords new timeouts')
+    @discord.default_permissions(moderate_members=True)
     async def mute(self, ctx: discord.ApplicationContext, member: discord.Member, duration, reason):
         try:
             minutes = datetime.timedelta(minutes=int(duration))
@@ -27,8 +26,8 @@ class staff(commands.Cog):
         except discord.Forbidden:
             await ctx.respond('No Perms')
 
-    @commands.slash_command(name='unmute', description='unmuting <user> with <reason> using new discord timeouts')
-    @commands.has_guild_permissions(moderate_members=True)
+    @discord.command(name='unmute', description='unmuting <user> with <reason> using new discord timeouts')
+    @discord.default_permissions(moderate_members=True)
     async def unmute(self, ctx: discord.ApplicationContext, member: discord.Member, reason):
         try:
             unmuteem = discord.Embed(
@@ -39,8 +38,8 @@ class staff(commands.Cog):
         except discord.Forbidden:
             await ctx.respond('No Perms')
 
-    @commands.slash_command(name='unban', description='unban <user> with <reason>')
-    @commands.has_guild_permissions(administrator=True)
+    @discord.command(name='unban', description='unban <user> with <reason>')
+    @discord.default_permissions(administrator=True)
     async def unban(self, ctx: discord.ApplicationContext, member: discord.Member, reason):
         try:
             unmuteem = discord.Embed(
@@ -51,8 +50,8 @@ class staff(commands.Cog):
         except discord.Forbidden:
             await ctx.respond('No Perms')
 
-    @commands.slash_command(name="purge", description="Deletes certain amount of messages **ADMIN**")
-    @commands.has_permissions(administrator=True)
+    @discord.command(name="purge", description="Deletes certain amount of messages **ADMIN**")
+    @discord.default_permissions(administrator=True)
     async def purge(self, ctx: discord.ApplicationContext, amount=10):
         try:
             print('Purge enabled')
@@ -62,8 +61,8 @@ class staff(commands.Cog):
         except discord.Forbidden:
             await ctx.respond('No Perms')
 
-    @commands.slash_command(name="ban", description="Bans specified user | /ban <user> <reason>")
-    @commands.has_permissions(moderate_members=True)
+    @discord.command(name="ban", description="Bans specified user | /ban <user> <reason>")
+    @discord.default_permissions(moderate_members=True)
     async def ban(self, ctx: discord.ApplicationContext, member: discord.Member, *, reason=None):
         try:
             banem = discord.Embed(
@@ -74,8 +73,8 @@ class staff(commands.Cog):
         except discord.Forbidden:
             await ctx.respond('No Perms')
 
-    @commands.slash_command(name="kick", description="Kicks specified user | /kick <user> <reason>")
-    @commands.has_permissions(administrator=True)
+    @discord.command(name="kick", description="Kicks specified user | /kick <user> <reason>")
+    @discord.default_permissions(administrator=True)
     async def kick(self, ctx: discord.ApplicationContext, member: discord.Member, *, reason=None):
         try:
             kickem = discord.Embed(

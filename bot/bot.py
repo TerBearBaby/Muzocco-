@@ -17,16 +17,24 @@ class Client(discord.Bot, ABC):
     """
 
     def __init__(self):
-        super().__init__(
-            intents=discord.Intents.all(),
-        )
+        logging.basicConfig(level=logging.INFO, format="%(asctime)s - %(name)s - %(levelname)s - %(message)s")
+        self.logger = logging.getLogger("bot")
+        if os.getenv("DEV"):
+            super().__init__(
+                intents=discord.Intents.all(),
+                debug_guilds=[int(os.getenv("DEV_GUILD"))],
+            )
+            self.logger.info("Running in dev mode.")
+        else:
+            super().__init__(
+                intents=discord.Intents.all()
+            )
+            self.logger.info("Running in prod mode.")
         self.statuses = cycle([
             "My Ping! {latency} ms",
             "Some Servers, {guild_count}",
             "Klassick | https://dsc.gg/klassick"
         ])  # Create a cycle, so we can simply use next() to get the next status.
-        logging.basicConfig(level=logging.INFO, format="%(asctime)s - %(name)s - %(levelname)s - %(message)s")
-        self.logger = logging.getLogger("bot")
 
     def load_exts(self):
         for ext in os.listdir("cogs"):
