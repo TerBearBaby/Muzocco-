@@ -112,6 +112,9 @@ class Music(discord.Cog):
 
         """
 
+        if not ctx.author.voice:
+            return await ctx.respond("You are not in a voice channel.")
+
         if channel is None:
             channel = ctx.author.voice.channel
 
