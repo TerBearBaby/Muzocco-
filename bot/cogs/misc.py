@@ -1,30 +1,31 @@
 import discord
+from discord.ext import commands
+from discord.ext.commands import Cog, slash_command
 from discord.ui import View, Button
 import time
 import requests
 import json
 
 
-class Misc(discord.Cog):
-    def __init__(self, client: discord.Bot):
+class Misc(Cog):
+    def __init__(self, client: commands.Bot):
         self.client = client
         self.starttime = time.time()
 
-    @discord.command(name="suggest", description="DM's Owner(s) (content) for your suggestion(s)")
+    @slash_command(name="suggest", description="DM's Owner(s) (content) for your suggestion(s)")
     async def suggest(self, ctx: discord.ApplicationContext, *, content):
         await self.client.get_user(800886153783279658).send(f"{ctx.author} suggests {content}")
         await self.client.get_user(977998058031833188).send(f"{ctx.author} suggests {content}")
         await ctx.respond("Suggestion sent!", ephemeral=True)
 
-    @discord.command(name="help", description="Help page with commands for Muzocco!")
+    @slash_command(name="help", description="Help page with commands for Muzocco!")
     async def help(self, ctx: discord.ApplicationContext):
         link = Button(label='Dashboard',
-                      url='https://terbearbaby.github.io/Muzocco-')
+                      url='https://muzocco.conchdev.com')
         view = View()
         view.add_item(link)
         embed = discord.Embed(title="Hey There!\nMuzocco! doesnt have too many commands yet!",
-                              description="Commands that are available for beta update are listed below (bigger desc "
-                                          "coming soon!)",
+                              description="Commands that are available for beta update are listed below (bigger desc coming soon!)",
                               color=0x2F3136)
         embed.add_field(
             name="/help", value="Shows help page for Muzocco!", inline=True)
@@ -48,32 +49,27 @@ class Misc(discord.Cog):
         embed.timestamp = discord.utils.utcnow()
         await ctx.respond(embed=embed, view=view)
 
-    @discord.command(name="echo", description="Repeats whatever you say [ /echo (content) ]")
+    @slash_command(name="echo", description="Repeats whatever you say [ /echo (content) ]")
     async def echo(self, ctx: discord.ApplicationContext, *, content):
         embed = discord.Embed(
             title=f"{content}", description=f"Repeated {content}", color=0x2F3136)
         await ctx.respond(embed=embed)
 
-    @discord.command(name="bot_info", description="Bot info for Muzocco!")
+    @slash_command(name="bot_info", description="Bot info for Muzocco!")
     async def botinfo(self, ctx: discord.ApplicationContext):
         link = Button(label='Dashboard',
-                      url='https://terbearbaby.github.io/Muzocco-')
+                      url='https://muzocco.conchdev.com')
         view = View()
         view.add_item(link)
         embed = discord.Embed(title="Bot Information",
-                              description=f"**Head Info:**\nHost: Muzocco-Test.pianoidol.repl.co\nDate Created: "
-                                          f"August 8th, 2022 8/8/2022\n\n**Statistic"
-                                          f"s:**\nPing: {round(self.client.latency * 1000)} ms\nUptime: "
-                                          f"{time.time() - self.starttime} seconds\n\n**Other Info:**\nPartners: "
-                                          f"<@977998058031833188>'s Talking Ben Bot <@994213404371861544> "
-                                          f"https://talking-ben-dbot.github.io/",
+                              description=f"**Head Info:**\nHost: Muzocco-Test.pianoidol.repl.co\nDate Created: August 8th, 2022 8/8/2022\n\n**Statistics:**\nPing: {round(self.client.latency * 1000)} ms\nUptime: {time.time() - self.starttime} seconds\n\n**Other Info:**\nPartners: <@977998058031833188>'s Talking Ben Bot <@994213404371861544> https://talking-ben-dbot.github.io/",
                               color=0x2F3136)
         embed.set_footer(text="DM Terbearbaby#6960 if you have any complaints")
         await ctx.respond(embed=embed, view=view)
 
-    @discord.command(name="user_info", description="User info for specified user")
+    @slash_command(name="user_info", description="User info for specified user")
     async def userinfo(self, ctx: discord.ApplicationContext, user: discord.Member = None):
-        if user is None:
+        if user == None:
             user = ctx.author
 
         rlist = []
@@ -98,10 +94,10 @@ class Misc(discord.Cog):
                         value="Displaying When User Joined Discord", inline=False)
         await ctx.respond(embed=embed)
 
-    @discord.command(name="avatar", description="Shows profile picture for specified user")
+    @slash_command(name="avatar", description="Shows profile picture for specified user")
     async def avatar(self, ctx: discord.ApplicationContext, member: discord.Member = None):
         if not ctx.author.bot:
-            if member is None:
+            if member == None:
                 member = ctx.author
         embed = discord.Embed(title=f"", color=0x2F3136)
         embed.set_author(name=f"{member}'s Avatar",
@@ -109,7 +105,7 @@ class Misc(discord.Cog):
         embed.set_image(url=f"{member.avatar.url}")
         await ctx.respond(embed=embed)
 
-    @discord.command(name="meme", description="Funny memes")
+    @slash_command(name="meme", description="Funny memes")
     async def meme(self, ctx: discord.ApplicationContext):
         content = requests.get("https://meme-api.herokuapp.com/gimme").text
         data = json.loads(content)
@@ -124,7 +120,7 @@ class Misc(discord.Cog):
         meme.set_footer(text=f"{likes}👍")
         await ctx.respond(embed=meme)
 
-    @discord.command(name="server_info", description="Info for a server that command is ran in")
+    @slash_command(name="server_info", description="Info for a server that command is ran in")
     async def serverinfo(self, ctx: discord.ApplicationContext):
         embed = discord.Embed(title=f"{ctx.guild.name} Info",
                               description="Information of this Server", color=0x2F3136)
@@ -140,10 +136,10 @@ class Misc(discord.Cog):
             inline=True)
         await ctx.respond(embed=embed)
 
-    @discord.command(name="links", description="Links for Muzocco!")
+    @slash_command(name="links", description="Links for Muzocco!")
     async def links(self, ctx: discord.ApplicationContext):
         link = Button(label='Dashboard',
-                      url='https://terbearbaby.github.io/Muzocco-')
+                      url='https://muzocco.conchdev.com')
         view = View()
         view.add_item(link)
         supportem = discord.Embed(title="Muzocco! Support Server", url="https://dsc.gg/muzocco-support",
@@ -152,10 +148,9 @@ class Misc(discord.Cog):
                                               "now!\nhttps://discord.gg/s9NtJADv\nhttps://dsc.gg/muzocco-support",
                                   color=0x2F3136)
         inviteem = discord.Embed(title="Muzocco!", url="https://dsc.gg/muzocco",
-                                 description="This is Muzocco! The coolest bot ever, invite this bot to your server "
-                                             "to listen to music in a VC or use my fun "
-                                             "commands!\n\nhttps://dsc.gg/muzocco",
-                                 color=0x2F3136)
+                                 description="This is Muzocco! The coolest bot ever, invite this bot to your server to "
+                                             "listen to music in a VC or use my fun "
+                                             "commands!\n\nhttps://dsc.gg/muzocco", color=0x2F3136)
         await ctx.respond(embed=inviteem)
         await ctx.respond(embed=supportem, view=view)
 
