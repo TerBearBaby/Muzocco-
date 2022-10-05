@@ -23,7 +23,8 @@ class Misc(discord.Cog):
         view = View()
         view.add_item(link)
         embed = discord.Embed(title="Hey There!\nMuzocco! doesnt have too many commands yet!",
-                              description="Commands that are available for beta update are listed below (bigger desc coming soon!)",
+                              description="Commands that are available for beta update are listed below (bigger desc "
+                                          "coming soon!)",
                               color=0x2F3136)
         embed.add_field(
             name="/help", value="Shows help page for Muzocco!", inline=True)
@@ -60,14 +61,19 @@ class Misc(discord.Cog):
         view = View()
         view.add_item(link)
         embed = discord.Embed(title="Bot Information",
-                              description=f"**Head Info:**\nHost: Muzocco-Test.pianoidol.repl.co\nDate Created: August 8th, 2022 8/8/2022\n\n**Statistics:**\nPing: {round(self.client.latency * 1000)} ms\nUptime: {time.time() - self.starttime} seconds\n\n**Other Info:**\nPartners: <@977998058031833188>'s Talking Ben Bot <@994213404371861544> https://talking-ben-dbot.github.io/",
+                              description=f"**Head Info:**\nHost: Muzocco-Test.pianoidol.repl.co\nDate Created: "
+                                          f"August 8th, 2022 8/8/2022\n\n**Statistic"
+                                          f"s:**\nPing: {round(self.client.latency * 1000)} ms\nUptime: "
+                                          f"{time.time() - self.starttime} seconds\n\n**Other Info:**\nPartners: "
+                                          f"<@977998058031833188>'s Talking Ben Bot <@994213404371861544> "
+                                          f"https://talking-ben-dbot.github.io/",
                               color=0x2F3136)
         embed.set_footer(text="DM Terbearbaby#6960 if you have any complaints")
         await ctx.respond(embed=embed, view=view)
 
     @discord.command(name="user_info", description="User info for specified user")
     async def userinfo(self, ctx: discord.ApplicationContext, user: discord.Member = None):
-        if user == None:
+        if user is None:
             user = ctx.author
 
         rlist = []
@@ -95,7 +101,7 @@ class Misc(discord.Cog):
     @discord.command(name="avatar", description="Shows profile picture for specified user")
     async def avatar(self, ctx: discord.ApplicationContext, member: discord.Member = None):
         if not ctx.author.bot:
-            if member == None:
+            if member is None:
                 member = ctx.author
         embed = discord.Embed(title=f"", color=0x2F3136)
         embed.set_author(name=f"{member}'s Avatar",
@@ -141,10 +147,14 @@ class Misc(discord.Cog):
         view = View()
         view.add_item(link)
         supportem = discord.Embed(title="Muzocco! Support Server", url="https://dsc.gg/muzocco-support",
-                                  description="Hey there, Muzocco! Support Server has all of Musocco's updates & GitHub's and more!\n\nJoin now!\nhttps://discord.gg/s9NtJADv\nhttps://dsc.gg/muzocco-support",
+                                  description="Hey there, Muzocco! Support Server has all of Musocco's updates & "
+                                              "GitHub's and more!\n\nJoin "
+                                              "now!\nhttps://discord.gg/s9NtJADv\nhttps://dsc.gg/muzocco-support",
                                   color=0x2F3136)
         inviteem = discord.Embed(title="Muzocco!", url="https://dsc.gg/muzocco",
-                                 description="This is Muzocco! The coolest bot ever, invite this bot to your server to listen to music in a VC or use my fun commands!\n\nhttps://dsc.gg/muzocco",
+                                 description="This is Muzocco! The coolest bot ever, invite this bot to your server "
+                                             "to listen to music in a VC or use my fun "
+                                             "commands!\n\nhttps://dsc.gg/muzocco",
                                  color=0x2F3136)
         await ctx.respond(embed=inviteem)
         await ctx.respond(embed=supportem, view=view)
