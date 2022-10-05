@@ -1,6 +1,9 @@
 # from __future__ import annotations
 import logging
 import typing
+from typing import TYPE_CHECKING
+if TYPE_CHECKING:
+    from bot import Client
 
 import discord
 import wavelink
@@ -45,7 +48,7 @@ class TrackButton(Button):
             title=f"Added {self.track.title} to the queue", color=self.ctx.author.color)
 
         await interaction.response.send_message(embed=embed)
-        
+
 
 class TrackButtonPool(View):
     def __init__(self):
@@ -53,14 +56,14 @@ class TrackButtonPool(View):
 
     def add_button(self, button: TrackButton):
         self.children.append(button)
-    
+
     async def disable_buttons(self):
         for button in self.children:
             button.disabled = True
 
         if self.message:
             await self.message.edit(view=self)
-    
+
 
 class Queue(wavelink.Queue):
     def __init__(self):
@@ -75,25 +78,31 @@ def get_player(ctx: discord.ApplicationContext) -> wavelink.Player:
 
 
 class Music(discord.Cog):
-    def __init__(self, client: discord.Bot):
+    def __init__(self, client: "Client"):
         self.client = client
+        self.log = self.client.logger
         client.loop.create_task(self.create_nodes())
 
     async def create_nodes(self) -> None:
         await self.client.wait_until_ready()
-        await wavelink.NodePool.create_node(bot=self.client,
-                                            host="127.0.0.1",
-                                            port="2333",
-                                            password=os.getenv("LAVALINK_PASS"),
-                                            region="us-central")
+        node = await wavelink.NodePool.create_node(bot=self.client,
+                                                   host="127.0.0.1",
+                                                   port=2333,
+                                                   password=os.getenv("LAVALINK_PASS"),
+                                                   region="us-central")
+        if node.is_connected():
+            self.log.debug("Connected to lavalink node")
+        else:
+            self.log.warning("Failed to connect to lavalink node")
 
     @discord.Cog.listener()
     async def on_wavelink_node_ready(self, node: wavelink.Node):
-        logging.info(f"Node <{node.identifier}> is ready!")
+        self.log.info(f"Node <{node.identifier}> is ready!")
 
     @discord.Cog.listener()
     async def on_wavelink_track_end(self, player: wavelink.Player,
                                     track: wavelink.Track, reason):
+        self.log.debug(f"Track ended: {track.title} for reason {reason}")
         if player.queue.is_empty:
             return
 
@@ -172,10 +181,10 @@ class Music(discord.Cog):
             return await ctx.respond("Neither of us are connected to a voice channel.")
 
         search = (await wavelink.YouTubeTrack.search(query=search))[:5]
-        
+
         embed = discord.Embed(
             title="Search Results", color=ctx.author.color,
-            )
+        )
 
         pool = TrackButtonPool()
 
