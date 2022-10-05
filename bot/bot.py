@@ -19,17 +19,15 @@ class Client(discord.Bot, ABC):
     def __init__(self):
         logging.basicConfig(level=logging.INFO, format="%(asctime)s - %(name)s - %(levelname)s - %(message)s")
         self.logger = logging.getLogger("bot")
+        super().__init__(
+            intents=discord.Intents.all()
+        )
         if os.getenv("DEV"):
-            super().__init__(
-                intents=discord.Intents.all(),
-                debug_guilds=[int(os.getenv("DEV_GUILD"))],
-            )
+            self.debug_guilds = [int(os.getenv("DEV_GUILD"))]
             self.logger.info("Running in dev mode.")
         else:
-            super().__init__(
-                intents=discord.Intents.all()
-            )
             self.logger.info("Running in prod mode.")
+
         self.statuses = cycle([
             "My Ping! {latency} ms",
             "Some Servers, {guild_count}",
@@ -47,7 +45,6 @@ class Client(discord.Bot, ABC):
         Instead of having to use @client.event decorators, we can simply add/overwrite
         methods on the client object. This is a lot cleaner and easier to read.
         """
-        self.load_exts()
         self.logger.info(f"Logged in as {self.user.name}")
         self.update_presence.start()
 
@@ -63,5 +60,6 @@ class Client(discord.Bot, ABC):
         self.logger.debug(f"Updated presence to \"{status}\"")
 
     def run(self):
+        self.load_exts()
         super().run(os.getenv("TOKEN"))
 
