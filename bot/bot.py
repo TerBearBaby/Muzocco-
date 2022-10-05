@@ -26,6 +26,7 @@ class Client(discord.Bot, ABC):
             self.debug_guilds = [int(os.getenv("DEV_GUILD"))]
             self.logger.info("Running in dev mode.")
         else:
+            self.logger.setLevel(logging.WARNING)
             self.logger.info("Running in prod mode.")
 
         self.statuses = cycle([
