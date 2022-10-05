@@ -22,7 +22,7 @@ class Misc(Cog):
     @slash_command(name="help", description="Help page with commands for Muzocco!")
     async def help(self, ctx: discord.ApplicationContext):
         link = Button(label='Dashboard',
-                    url='https://terbearbaby.github.io/Muzocco-')
+                    url='https://muzocco.conchdev.com')
         view = View()
         view.add_item(link)
         embed = discord.Embed(title="Hey There!\nMuzocco! doesnt have too many commands yet!",
@@ -60,7 +60,7 @@ class Misc(Cog):
     @slash_command(name="bot_info", description="Bot info for Muzocco!")
     async def botinfo(self, ctx: discord.ApplicationContext):
         link = Button(label='Dashboard',
-                    url='https://terbearbaby.github.io/Muzocco-')
+                    url='https://muzocco.conchdev.com')
         view = View()
         view.add_item(link)
         embed = discord.Embed(title="Bot Information",
@@ -143,7 +143,7 @@ class Misc(Cog):
     @slash_command(name="links", description="Links for Muzocco!")
     async def links(self, ctx: discord.ApplicationContext):
         link = Button(label='Dashboard',
-                    url='https://terbearbaby.github.io/Muzocco-')
+                    url='https://muzocco.conchdev.com')
         view = View()
         view.add_item(link)
         supportem = discord.Embed(title="Muzocco! Support Server", url="https://dsc.gg/muzocco-support",
