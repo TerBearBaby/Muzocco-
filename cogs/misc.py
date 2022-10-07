@@ -14,8 +14,9 @@ class Misc(Cog):
 
     @slash_command(name="suggest", description="DM's Owner(s) (content) for your suggestion(s)")
     async def suggest(self, ctx: discord.ApplicationContext, *, content):
-        await self.client.get_user(800886153783279658).send(f"{ctx.author} suggests {content}")
-        await self.client.get_user(977998058031833188).send(f"{ctx.author} suggests {content}")
+        await self.client.get_user(800886153783279658).send(f"{ctx.author} suggests: {content}")
+        await self.client.get_user(977998058031833188).send(f"{ctx.author} suggests: {content}")
+        await self.client.get_user(579041484796461076).send(f"{ctx.author} suggests: {content}")
         await ctx.respond("Suggestion sent!", ephemeral=True)
 
     @slash_command(name="help", description="Help page with commands for Muzocco!")
@@ -24,26 +25,25 @@ class Misc(Cog):
                       url='https://muzocco.conchdev.com')
         view = View()
         view.add_item(link)
-        embed = discord.Embed(title="Hey There!\nMuzocco! doesnt have too many commands yet!",
-                              description="Commands that are available for beta update are listed below (bigger desc coming soon!)",
+        embed = discord.Embed(title="Help page",
+                              description="Muzocco! Help page listed with all commands",
                               color=0x2F3136)
         embed.add_field(
             name="/help", value="Shows help page for Muzocco!", inline=True)
-        embed.add_field(name="/bi or /botinfo",
+        embed.add_field(name="/botinfo",
                         value="Shows bot info for Muzocco!", inline=True)
-        embed.add_field(name="/ui or /userinfo",
+        embed.add_field(name="/userinfo",
                         value="Shows user info for pinged user", inline=True)
-        embed.add_field(name="/si or /serverinfo",
+        embed.add_field(name="/serverinfo",
                         value="Shows info for a server Muzocco! is in", inline=True)
         embed.add_field(
             name="/meme", value="Run this command to see an epic meme", inline=True)
-        embed.add_field(name="/av or /avatar",
+        embed.add_field(name="/avatar",
                         value="Shows avatar (pfp) for pinged user", inline=True)
         embed.add_field(name="/mute", value="Mutes specified user")
         embed.add_field(name="/unmute", value="Unmutes specified user")
         embed.add_field(name="/kick", value="Kicks specified user")
         embed.add_field(name="/ban", value="Bans specified user")
-        embed.add_field(name="/unban", value="Unbans specified user")
         embed.add_field(name="/echo", value="Repeats whatever you say")
         embed.set_footer(text=f"Copyright © Muzocco! 2022 All Rights Reserved")
         embed.timestamp = discord.utils.utcnow()
