@@ -28,23 +28,23 @@ class Misc(Cog):
         embed = discord.Embed(title="Help page",
                               description="Muzocco! Help page listed with all commands",
                               color=0x2F3136)
-        embed.add_field(
-            name="/help", value="Shows help page for Muzocco!", inline=True)
-        embed.add_field(name="/botinfo",
+        embed.add_field(name="</help:1006049204231229581>", value="Shows help page for Muzocco!", inline=True)
+        embed.add_field(name="</botinfo:1006049204231229581>",
                         value="Shows bot info for Muzocco!", inline=True)
-        embed.add_field(name="/userinfo",
+        embed.add_field(name="</userinfo:1006049204231229581>",
                         value="Shows user info for pinged user", inline=True)
-        embed.add_field(name="/serverinfo",
-                        value="Shows info for a server Muzocco! is in", inline=True)
-        embed.add_field(
-            name="/meme", value="Run this command to see an epic meme", inline=True)
-        embed.add_field(name="/avatar",
+        embed.add_field(name="</serverinfo:1006049204231229581>", value="Shows info for a server Muzocco! is in", inline=True)
+        embed.add_field(name="</meme:1006049204231229581>", value="Run this command to see an epic meme", inline=True)
+        embed.add_field(name="</avatar:1006049204231229581>",
                         value="Shows avatar (pfp) for pinged user", inline=True)
-        embed.add_field(name="/mute", value="Mutes specified user")
-        embed.add_field(name="/unmute", value="Unmutes specified user")
-        embed.add_field(name="/kick", value="Kicks specified user")
-        embed.add_field(name="/ban", value="Bans specified user")
         embed.add_field(name="/echo", value="Repeats whatever you say")
+        embed.add_field(name="</play:1006049204231229581>", value="Mutes specified user")
+        embed.add_field(name="</leave:1006049204231229581>", value="Unmutes specified user")
+        embed.add_field(name="</join:1006049204231229581>", value="Kicks specified user")
+        embed.add_field(name="</skip:1006049204231229581>", value="Bans specified user")
+        embed.add_field(name="</pause:1006049204231229581>", value="Repeats whatever you say")
+        embed.add_field(name="</queue:1006049204231229581>", value="Repeats whatever you say")
+        embed.add_field(name="</stop:1006049204231229581>", value="Repeats whatever you say")
         embed.set_footer(text=f"Copyright © Muzocco! 2022 All Rights Reserved")
         embed.timestamp = discord.utils.utcnow()
         await ctx.respond(embed=embed, view=view)
