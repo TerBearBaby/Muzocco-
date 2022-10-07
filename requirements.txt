@@ -1,5 +1,6 @@
 numpy~=1.23.3
 py-cord[speed]
+py-cord[voice]
 requests
 python-dotenv
 wavelink

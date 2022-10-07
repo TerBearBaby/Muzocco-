@@ -1,11 +1,12 @@
 # from __future__ import annotations
 import logging
 import typing
+from typing import TYPE_CHECKING
+if TYPE_CHECKING:
+    from bot import Client
 
 import discord
 import wavelink
-from discord.ext.commands import Cog, slash_command
-from discord.ext import commands
 from discord.ui import View, Button
 import datetime
 import os
@@ -47,7 +48,7 @@ class TrackButton(Button):
             title=f"Added {self.track.title} to the queue", color=self.ctx.author.color)
 
         await interaction.response.send_message(embed=embed)
-        
+
 
 class TrackButtonPool(View):
     def __init__(self):
@@ -55,14 +56,14 @@ class TrackButtonPool(View):
 
     def add_button(self, button: TrackButton):
         self.children.append(button)
-    
+
     async def disable_buttons(self):
         for button in self.children:
             button.disabled = True
 
         if self.message:
             await self.message.edit(view=self)
-    
+
 
 class Queue(wavelink.Queue):
     def __init__(self):
@@ -76,26 +77,32 @@ def get_player(ctx: discord.ApplicationContext) -> wavelink.Player:
     return player
 
 
-class Music(Cog):
-    def __init__(self, client: commands.Bot):
+class Music(discord.Cog):
+    def __init__(self, client: "Client"):
         self.client = client
+        self.log = self.client.logger
         client.loop.create_task(self.create_nodes())
 
     async def create_nodes(self) -> None:
         await self.client.wait_until_ready()
-        await wavelink.NodePool.create_node(bot=self.client,
-                                            host="127.0.0.1",
-                                            port="2333",
-                                            password=os.getenv("LAVALINK_PASS"),
-                                            region="us-central")
+        node = await wavelink.NodePool.create_node(bot=self.client,
+                                                   host="127.0.0.1",
+                                                   port=2333,
+                                                   password=os.getenv("LAVALINK_PASS"),
+                                                   region="us-central")
+        if node.is_connected():
+            self.log.debug("Connected to lavalink node")
+        else:
+            self.log.warning("Failed to connect to lavalink node")
 
-    @Cog.listener()
+    @discord.Cog.listener()
     async def on_wavelink_node_ready(self, node: wavelink.Node):
-        logging.info(f"Node <{node.identifier}> is ready!")
+        self.log.info(f"Node <{node.identifier}> is ready!")
 
-    @Cog.listener()
+    @discord.Cog.listener()
     async def on_wavelink_track_end(self, player: wavelink.Player,
                                     track: wavelink.Track, reason):
+        self.log.debug(f"Track ended: {track.title} for reason {reason}")
         if player.queue.is_empty:
             return
 
@@ -103,7 +110,7 @@ class Music(Cog):
 
         await player.play(track)
 
-    @slash_command(name="join")
+    @discord.command(name="join")
     async def join_command(self,
                            ctx: discord.ApplicationContext,
                            channel: typing.Optional[
@@ -113,6 +120,9 @@ class Music(Cog):
         Bring the music player to your voice channel.
 
         """
+
+        if not ctx.author.voice:
+            return await ctx.respond("You are not in a voice channel.")
 
         if channel is None:
             channel = ctx.author.voice.channel
@@ -131,7 +141,7 @@ class Music(Cog):
 
         await ctx.respond(embed=embed)
 
-    @slash_command(name="leave")
+    @discord.command(name="leave")
     async def leave_command(self, ctx: discord.ApplicationContext):
         """
 
@@ -151,7 +161,7 @@ class Music(Cog):
 
         await ctx.respond(embed=embed)
 
-    @slash_command(name="play")
+    @discord.command(name="play")
     async def play_command(self, ctx: discord.ApplicationContext, search: str):
         """
 
@@ -171,10 +181,10 @@ class Music(Cog):
             return await ctx.respond("Neither of us are connected to a voice channel.")
 
         search = (await wavelink.YouTubeTrack.search(query=search))[:5]
-        
+
         embed = discord.Embed(
             title="Search Results", color=ctx.author.color,
-            )
+        )
 
         pool = TrackButtonPool()
 
@@ -186,7 +196,7 @@ class Music(Cog):
 
         await ctx.respond(embed=embed, view=pool)
 
-    @slash_command(name="stop")
+    @discord.command(name="stop")
     async def stop_command(self, ctx: discord.ApplicationContext):
         """
 
@@ -211,7 +221,7 @@ class Music(Cog):
         else:
             return await ctx.respond("The client is not playing anything!")
 
-    @slash_command(name="pause")
+    @discord.command(name="pause")
     async def pause_command(self, ctx: discord.ApplicationContext):
         """
 
@@ -239,7 +249,7 @@ class Music(Cog):
         else:
             return await ctx.respond("The client is already paused!")
 
-    @slash_command(name="resume")
+    @discord.command(name="resume")
     async def resume_command(self, ctx: discord.ApplicationContext):
         """
 
@@ -263,7 +273,7 @@ class Music(Cog):
         else:
             return await ctx.respond("The client is not paused!")
 
-    @slash_command(name="skip")
+    @discord.command(name="skip")
     async def skip_command(self, ctx: discord.ApplicationContext):
         """
 
@@ -292,7 +302,7 @@ class Music(Cog):
         else:
             return await ctx.respond("The client is not playing anything!")
 
-    @slash_command(name="queue")
+    @discord.command(name="queue")
     async def queue_command(self, ctx: discord.ApplicationContext):
         """
 
