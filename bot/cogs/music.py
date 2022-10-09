@@ -65,10 +65,10 @@ class TrackButtonPool(View):
             await self.message.edit(view=self)
 
 
-class Queue(wavelink.Queue):
-    def __init__(self):
-        self.queue = []
-        self.position = 0
+# class Queue(wavelink.Queue):
+#     def __init__(self):
+#         self.queue = []
+#         self.position = 0
 
 
 def get_player(ctx: discord.ApplicationContext) -> wavelink.Player:
@@ -106,7 +106,10 @@ class Music(discord.Cog):
         if player.queue.is_empty:
             return
 
+        print(player.queue)
+
         track = await player.queue.get_wait()
+        print(track)
 
         await player.play(track)
 
@@ -287,15 +290,15 @@ class Music(discord.Cog):
             return await ctx.respond("The client is not connected to a voice channel!")
 
         if player.is_playing():
+            await player.stop()
+
             if player.queue.is_empty:
-                return await ctx.respond("The queue is empty!")
-
-            track = player.queue.get()
-
-            await player.play(track)
-
-            embed = discord.Embed(
-                title=f"Now playing {display_track(track)}", color=ctx.author.color)
+                embed = discord.Embed(
+                    title="The queue is empty!", color=ctx.author.color
+                )
+            else:
+                embed = discord.Embed(
+                    title=f"Now playing {display_track(player.queue[0])}", color=ctx.author.color)
 
             return await ctx.respond(embed=embed)
 
