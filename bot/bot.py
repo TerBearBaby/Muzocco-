@@ -56,7 +56,8 @@ class Client(discord.Bot, ABC):
             activity=discord.Activity(
                 type=discord.ActivityType.watching,
                 name=status
-            )
+            ),
+            status=discord.Status.dnd
         )
         self.logger.debug(f"Updated presence to \"{status}\"")
 
