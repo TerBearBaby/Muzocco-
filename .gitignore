@@ -4,3 +4,4 @@ binaries/
 application.yml
 logs/
 .idea/
+.fleet/
