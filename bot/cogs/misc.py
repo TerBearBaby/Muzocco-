@@ -50,7 +50,7 @@ class Misc(Cog):
         embed.timestamp = discord.utils.utcnow()
         await ctx.respond(embed=embed)
 
-    @slash_command(name="bot information", description="Bot info for Muzocco!")
+    @slash_command(name="botinfo", description="Bot info for Muzocco!")
     async def botinfo(self, ctx: discord.ApplicationContext):
         link = Button(label='Dashboard',
                       url='https://muzocco.conchdev.com')
@@ -63,7 +63,7 @@ class Misc(Cog):
         embed.timestamp = discord.utils.utcnow()
         await ctx.respond(embed=embed, view=view)
 
-    @slash_command(name="user information", description="User info for specified user")
+    @slash_command(name="userinfo", description="User info for specified user")
     async def userinfo(self, ctx: discord.ApplicationContext, user: discord.Member = None):
         if user == None:
             user = ctx.author
