@@ -57,7 +57,10 @@ class Misc(Cog):
         view = View()
         view.add_item(link)
         embed = discord.Embed(title="Bot Information",
-                              description=f"**Head Info:**\nHost: Muzocco-Test.pianoidol.repl.co\nDate Created: August 8th, 2022 8/8/2022\n\n**Statistics:**\nReputation (Servers): {len(client.guilds)}\nPing: {round(self.client.latency * 1000)} ms\nUptime: {time.time() - self.starttime} seconds\n\n**Other Info:**\nWebsite: Click the button!/nPartners: <@977998058031833188>'s Talking Ben Bot <@994213404371861544>! Check out more here: https://talking-ben-dbot.github.io/",
+                              description=f"**Head Info:**\nHost: Raspberry Pi 4B 4gb\nDate Created: August 8th, 2022 8/8/2022\n\n**Statistics:**"
+                              f"\nReputation (Servers): {len(self.client.guilds)}\nPing: {round(self.client.latency * 1000)} ms\nUptime: {time.time() - self.starttime} "
+                              f"seconds\n\n**Other Info:**\nWebsite: Click the button!/nPartners: <@977998058031833188>'s Talking Ben Bot <@994213404371861544>! Check out "
+                              "more here: https://talking-ben-dbot.github.io/",
                               color=0x2F3136)
         embed.set_footer(text="DM Terbearbaby#6960 if you have any complaints")
         embed.timestamp = discord.utils.utcnow()
