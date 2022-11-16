@@ -58,9 +58,7 @@ class Misc(Cog):
         view.add_item(link)
         embed = discord.Embed(title="Bot Information",
                               description=f"**Head Info:**\nHost: Raspberry Pi 4B 4gb\nDate Created: August 8th, 2022 8/8/2022\n\n**Statistics:**"
-                              f"\nReputation (Servers): {len(self.client.guilds)}\nPing: {round(self.client.latency * 1000)} ms\nUptime: {time.time() - self.starttime} "
-                              f"seconds\n\n**Other Info:**\nWebsite: Click the button!/nPartners: <@977998058031833188>'s Talking Ben Bot <@994213404371861544>! Check out "
-                              "more here: https://talking-ben-dbot.github.io/",
+                              f"\nReputation (Servers): {len(self.client.guilds)}\nPing: {round(self.client.latency * 1000)} ms\nUptime: {time.time() - self.starttime} seconds\n\n**Other Info:**\nWebsite: Click the button!/nPartners: <@977998058031833188>'s Talking Ben Bot <@994213404371861544>! Check out more here: https://talking-ben-dbot.github.io/",
                               color=0x2F3136)
         embed.set_footer(text="DM Terbearbaby#6960 if you have any complaints")
         embed.timestamp = discord.utils.utcnow()
@@ -121,5 +119,11 @@ class Misc(Cog):
         meme.set_footer(text=f"{likes}👍")
         await ctx.respond(embed=meme)
 
+    @slash_command(name="advert", description="Advert for Muzocco!")
+    async def advert(self, ctx):
+        embed = discord.Embed(title=f"Advertisement", description="Advertise the bot in your servers!", color=0x2F3136)
+        await ctx.respond(embed=embed)
+        await ctx.respond("```\nThis is Muzocco! The coolest bot ever, invite this bot to your server to listen to music in a VC or use my fun commands! Muzocco! Support Server has all of Musocco's updates & GitHub's and more!\n\n**Join and add the bot now!**\nhttps://discord.gg/QBS6YBh6qS\n\n**Guide with website**\nTo add bot to server, click link below and press on invite image\nhttps://muzocco.conchdev.com\n\n**Top.gg vote**\nhttps://top.gg/bot/1006049204231229581\n\nCreated by TerBearBaby at https://TerBearBaby.github.io\nhttps://share.creavite.co/mralP2oW4Q46I312.gif\n```")
+        await ctx.respond("__**RESULT**__\nThis is Muzocco! The coolest bot ever, invite this bot to your server to listen to music in a VC or use my fun commands! Muzocco! Support Server has all of Musocco's updates & GitHub's and more!\n\n**Join and add the bot now!**\nhttps://discord.gg/QBS6YBh6qS\n\n**Guide with website**\nTo add bot to server, click link below and press on invite image\nhttps://muzocco.conchdev.com\n\n**Top.gg vote**\nhttps://top.gg/bot/1006049204231229581\n\nCreated by TerBearBaby at https://TerBearBaby.github.io\nhttps://share.creavite.co/mralP2oW4Q46I312.gif")
 def setup(client):
     client.add_cog(Misc(client))
